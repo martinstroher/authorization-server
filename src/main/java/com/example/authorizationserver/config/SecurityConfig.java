@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -17,7 +18,16 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 @Configuration(proxyBeanMethods = false)
 public class SecurityConfig {
-
+    protected void configure(HttpSecurity httpSecurity) throws Exception {
+        httpSecurity.authorizeRequests()
+                .requestMatchers(HttpMethod.POST, "/api/ingredients")
+                .hasAuthority("SCOPE_writeIngredients")
+                .requestMatchers(HttpMethod.DELETE, "/api/ingredients")
+                .hasAuthority("SCOPE_deleteIngredients")
+                
+                .and()
+                .oauth2ResourceServer(oauth2 -> oauth2.jwt());
+    }
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         return http.authorizeRequests(authorizeRequests ->
