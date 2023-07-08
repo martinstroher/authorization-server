@@ -1,19 +1,21 @@
 package com.example.authorizationserver.config;
 
+import com.example.authorizationserver.entity.User;
 import com.example.authorizationserver.repository.UserRepository;
 import java.util.List;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @EnableWebSecurity
+@Configuration(proxyBeanMethods = false)
 public class SecurityConfig {
 
     @Bean
@@ -37,8 +39,9 @@ public class SecurityConfig {
     @Bean
     public ApplicationRunner dataLoader(UserRepository repository, PasswordEncoder encoder) {
         return args -> {
-            repository.save(new User("habuma", encoder.encode("password"), List.of(new SimpleGrantedAuthority("ROLE_ADMIN"))));
-            repository.save(new User("tacochef", encoder.encode("password"), List.of(new SimpleGrantedAuthority("ROLE_ADMIN"))));
+//            repository.save(new User("habuma", encoder.encode("password"), List.of(new SimpleGrantedAuthority("ROLE_ADMIN"))));
+//            repository.save(new User("tacochef", encoder.encode("password"), List.of(new SimpleGrantedAuthority("ROLE_ADMIN"))));
+            repository.save(new User("tacochef", encoder.encode("password")));
         };
     }
 }
